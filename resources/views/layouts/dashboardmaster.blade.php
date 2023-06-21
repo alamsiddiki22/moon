@@ -14,6 +14,8 @@
 	<link href="{{ asset('dashboard_assets') }}/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
     <link href="{{ asset('dashboard_assets') }}/css/style.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Datatable -->
+    <link href="{{ asset('dashboard_assets') }}/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -895,6 +897,10 @@
 
 	<!-- Dashboard 1 -->
 	<script src="{{ asset('dashboard_assets') }}/js/dashboard/dashboard-1.js"></script>
+     <!-- Datatable -->
+     <script src="{{ asset('dashboard_assets') }}/vendor/datatables/js/jquery.dataTables.min.js"></script>
+     <script src="{{ asset('dashboard_assets') }}/js/plugins-init/datatables.init.js"></script>
+
 	<script>
 		function carouselReview(){
 			/*  testimonial one function by = owl.carousel.js */
@@ -934,6 +940,7 @@
 				carouselReview();
 			}, 1000);
 		});
-	</script>
+        </script>
+        @yield('footer_scripts')
 </body>
 </html>
