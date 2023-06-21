@@ -2,6 +2,46 @@
 
 @section('contant')
 {{-- <div class="container-fluid"> --}}
+  <style>
+    /* @import url("https://fonts.googleapis.com/css2?family=Exo+2&display=swap"); */
+
+input[type=checkbox].input-switch {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  position: relative;
+  width: 60px;
+  height: 34px;
+  border-radius: 34px;
+  background-color: #cccccc;
+  margin: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+input[type=checkbox].input-switch:before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin: 4px;
+  background-color: #FFFFFF;
+  border-radius: 100%;
+  transition: all 0.3s ease-in-out;
+}
+input[type=checkbox].input-switch:checked {
+  background-color: #5700fa;
+}
+input[type=checkbox].input-switch:checked:before {
+  transform: translateX(100%);
+}
+input[type=checkbox].input-switch:disabled {
+  cursor: not-allowed;
+}
+
+
+</style>
 <div>
     <div class="row">
         <div class="col-lg-8">
@@ -73,7 +113,6 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">Vendor List</div>
-
                         <div class="card-body">
                             @if (session('status'))
                                 <div class="alert alert-success" role="alert">
@@ -87,10 +126,13 @@
                                     <tr>
                                       <th>SL No</th>
                                       <th>User Name</th>
-                                      <th>Email Address</th>
-                                      <th>Phone Number</th>
+                                      <th>
+                                        Email Address <br>
+                                        Phone Number
+                                      </th>
                                       <th>Profile Photo</th>
                                       <th>User Create at</th>
+                                      <th>status</th>
                                       <th>Action</th>
                                       <th>Role</th>
                                     </tr>
@@ -101,8 +143,11 @@
                                       <tr class="@if ($loop->odd) table-primary @else table-danger @endif">
                                         <td>{{ $loop->index+1 }}</td>
                                         <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->phone_number }}</td>
+                                        <td>
+                                          <p>{{ $user->email }}</p>
+                                          <p>{{ $user->phone_number }}</p>
+
+                                        </td>
                                         <td>
                                             @empty($user->profile_photo)
                                                 <img height="50px" src="{{ Avatar::create($user->name)->toBase64() }}" />
@@ -111,12 +156,12 @@
                                             @endempty
                                         </td>
                                         <td>{{ $user->created_at->diffForHumans() }}</td>
-                                        {{-- <td>{{ $user->created_at }}</td> --}}
+                                        <td>{{ ($user->action == true) ? 'active' : 'deactive' }}</td>
                                         <td>
-                                            {{ ($user->action == true) ? 'active' : 'deactive' }}
-                                            <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
-                                            {{-- <a href="{{ url('user/delete') }}/{{ $user->id }}" class="btn btn-danger btn-sm">Delete</a>
-                                            <a href="{{ url('user/edit') }}/{{ $user->id }}" class="btn btn-info btn-sm">Edit</a> --}}
+                                          <form action="{{ route('vendor.action.change', $user->id) }}" method="post">
+                                            @csrf
+                                            <input onchange="this.form.submit()" {{ ($user->action == true) ? 'checked' : '' }} type="checkbox" name="exampleInput" class="input-switch">
+                                          </form>
                                         </td>
                                         <td>{{ $user->role }}</td>
                                       </tr>

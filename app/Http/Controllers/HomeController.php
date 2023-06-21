@@ -68,5 +68,16 @@ class HomeController extends Controller
         // Mail::to('rahomatulla23siddiki@gmail.com')->send(new AdminMail($request->except('_token')));
         return back();
     }
+    public function vendor_action_change($id)
+    {
+        $user = User::find($id);
+        if($user->action == false){
+            $user->action = true;
+        }else{
+            $user->action = false;
+        }
+        $user->save();
+        return back();
+    }
 
 }

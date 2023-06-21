@@ -31,6 +31,7 @@ Auth::routes(['register' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
 Route::get('/users', [HomeController::class, 'users']);
+Route::post('/vendor/action/change{id}', [HomeController::class, 'vendor_action_change'])->name('vendor.action.change');
 Route::post('/add/user', [HomeController::class, 'add_user'])->name('add.user');
 
 Route::get('/profile', [ProfileController::class, 'profile']);
