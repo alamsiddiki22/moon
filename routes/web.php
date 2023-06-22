@@ -30,7 +30,7 @@ Route::get('team/restore/{id}', [FrontendController::class, "teamrestore"]);
 Auth::routes(['register' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
-Route::get('/users', [HomeController::class, 'users']);
+Route::get('/users', [HomeController::class, 'users'])->middleware('Adminrolechecker');
 Route::post('/vendor/action/change{id}', [HomeController::class, 'vendor_action_change'])->name('vendor.action.change');
 Route::post('/add/user', [HomeController::class, 'add_user'])->name('add.user');
 

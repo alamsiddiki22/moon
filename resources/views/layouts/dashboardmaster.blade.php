@@ -788,21 +788,26 @@
                             <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
-                    <li><a href="{{ url('users') }}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-settings-2"></i>
-                            <span class="nav-text">Users List</span>
-                        </a>
-                    </li>
-                    <li><a href="{{ route('category.create') }}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-settings-2"></i>
-                            <span class="nav-text">Category Add</span>
-                        </a>
-                    </li>
-                    <li><a href="{{ route('category.index') }}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-settings-2"></i>
-                            <span class="nav-text">Category List</span>
-                        </a>
-                    </li>
+                    {{-- links only visible only admin start --}}
+                    @if (auth()->user()->role == 'admin')
+                        <li><a href="{{ url('users') }}" class="ai-icon" aria-expanded="false">
+                               <i class="flaticon-381-settings-2"></i>
+                               <span class="nav-text">Users List</span>
+                            </a>
+                        </li>
+                        <li><a href="{{ route('category.create') }}" class="ai-icon" aria-expanded="false">
+                                <i class="flaticon-381-settings-2"></i>
+                                <span class="nav-text">Category Add</span>
+                            </a>
+                        </li>
+                        <li><a href="{{ route('category.index') }}" class="ai-icon" aria-expanded="false">
+                                <i class="flaticon-381-settings-2"></i>
+                                <span class="nav-text">Category List</span>
+                            </a>
+                        </li>
+                    @endif
+                    {{-- links only visible only admin end --}}
+                    
                     <li><a href="{{ url('/') }}" class="ai-icon" aria-expanded="false">
                             <i class="flaticon-381-settings-2"></i>
                             <span class="nav-text">Display</span>
