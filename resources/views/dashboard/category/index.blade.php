@@ -24,6 +24,7 @@
                                         <th>Category Name</th>
                                         <th>Category Slug</th>
                                         <th>Category Photo</th>
+                                        <th>Category Color</th>
                                         <th>Create at</th>
                                         <th>Action</th>
                                     </tr>
@@ -36,8 +37,8 @@
                                             <td>{{ $category->category_slug }}</td>
                                             <td>
                                                 <img width="80" src="{{ asset('uploads/category_photos') }}/{{ $category->category_photo }}" class="img-fluid" alt="">
-
                                             </td>
+                                            <td>{{ $category->category_color }}</td>
                                             <td>{{ $category->created_at }}</td>
                                             <td>
                                                 <a href="{{ route('category.show', $category->id) }}" class="btn btn-sm btn-info">Details</a>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactMessage;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,7 +14,13 @@ class FrontendController extends Controller
 {
     function index() {
         return view('frontend.index', [
+            'products' => Product::latest()->get(),
             'categories' => Category::all()
+        ]);
+    }
+    function product_details($id) {
+        return view('frontend.product_details', [
+            'product' => Product::find($id),
         ]);
     }
     function about() {
@@ -23,7 +30,7 @@ class FrontendController extends Controller
         return view('frontend.contact');
     }
     function contact_post(Request $request) {
-        
+
         Mail::to('rahomatulla23siddiki@gmail.com')->send(new ContactMessage($request->except('_token')));
         return back();
     }

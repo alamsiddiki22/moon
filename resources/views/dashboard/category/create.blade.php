@@ -32,6 +32,10 @@
                                 <input type="file" class="form-control" id="" name="category_photo">
                             </div>
                             <div class="col-md-4">
+                                <label for="" class="form-label my-4 mx-3">Category Color</label>
+                                <input type="color" id="" name="category_color">
+                            </div>
+                            <div class="col-md-4">
                                 <button type="submit" class="btn btn-success">Category Add</button>
                             </div>
                         </form>

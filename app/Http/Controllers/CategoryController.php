@@ -72,6 +72,7 @@ class CategoryController extends Controller
             'category_name' => $request->category_name,
             'category_slug' => $slug,
             'category_photo' => $new_name,
+            'category_color' => $request->category_color,
             'created_at' => Carbon::now(),
         ]);
         return redirect('category');
