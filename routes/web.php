@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -30,9 +31,6 @@ Route::get('team/restore/{id}', [FrontendController::class, "teamrestore"]);
 Auth::routes(['register' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
-Route::get('/users', [HomeController::class, 'users'])->middleware('Adminrolechecker');
-Route::post('/vendor/action/change{id}', [HomeController::class, 'vendor_action_change'])->name('vendor.action.change');
-Route::post('/add/user', [HomeController::class, 'add_user'])->name('add.user');
 
 Route::get('/profile', [ProfileController::class, 'profile']);
 Route::post('/profile/photo/update', [ProfileController::class, 'profile_photo_update']);
@@ -44,8 +42,7 @@ Route::get('/account', [CustomerController::class, 'account'])->name('account');
 Route::post('/customer/login', [CustomerController::class, 'customer_login'])->name('customer.login');
 Route::post('/customer/register', [CustomerController::class, 'customer_register'])->name('customer.register');
 
-// CategoryController
-Route::resource('category', CategoryController::class);
+
 
 //***email veryfication start***//
 //***email veryfication start***//
@@ -72,3 +69,14 @@ Route::get('/vendor/login', [VendorController::class, 'vendor_login'])->name('ve
 Route::post('/vendor/registration', [VendorController::class, 'vendor_registration_post'])->name('vendor.registration.post');
 Route::post('/vendor/login/post', [VendorController::class, 'vendor_login_post'])->name('vendor.login.post');
 
+// ProductController
+Route::resource('product', ProductController::class);
+
+//middleware
+Route::middleware(['adminrolechecker'])->group(function () {
+    Route::get('/users', [HomeController::class, 'users']);
+    Route::post('/vendor/action/change{id}', [HomeController::class, 'vendor_action_change'])->name('vendor.action.change');
+    Route::post('/add/user', [HomeController::class, 'add_user'])->name('add.user');
+    // CategoryController
+    Route::resource('category', CategoryController::class);
+});

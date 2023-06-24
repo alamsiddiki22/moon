@@ -16,6 +16,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <!-- Datatable -->
     <link href="{{ asset('dashboard_assets') }}/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Select-2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -737,11 +740,10 @@
 							</li>
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
-                                    @if (auth()->user()->profile_photo)
-                                        {{-- <img src="{{ asset('dashboard_assets') }}/images/profile/profile.png" class="img-fluid rounded-circle" alt=""> --}}
-                                        <img src="{{ asset('uploads/profile_photos') }}/{{ auth()->user()->profile_photo }}" width="20" alt=""/>
-                                    @else
+                                    @if (!auth()->user()->profile_photo )
                                         <img src="{{ asset('dashboard_assets/images/default_profile_photo.png') }}" width="20" alt="">
+                                    @else
+                                        <img src="{{ asset('uploads/profile_photos') }}/{{ auth()->user()->profile_photo }}" width="20" alt=""/>
                                     @endif
 									<div class="header-info">
 										<span class="text-black"><strong>{{ auth()->user()->name }}</strong></span>
@@ -807,7 +809,7 @@
                         </li>
                     @endif
                     {{-- links only visible only admin end --}}
-                    
+
                     <li><a href="{{ url('/') }}" class="ai-icon" aria-expanded="false">
                             <i class="flaticon-381-settings-2"></i>
                             <span class="nav-text">Display</span>
@@ -818,14 +820,20 @@
                             <span class="nav-text">Team</span>
                         </a>
                     </li>
-                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-381-networking"></i>
-							<span class="nav-text">Res</span>
-						</a>
-                        <ul aria-expanded="false">
-							<li><a href="index.html">Res</a></li>
-						</ul>
-                    </li>
+                    {{-- links only visible only vendor start --}}
+                    @if (auth()->user()->role == 'vendor')
+                        <li>
+                            <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                                <i class="flaticon-381-networking"></i>
+                                <span class="nav-text">Product</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                <li><a href="{{ route('product.create') }}">Add Product</a></li>
+                                <li><a href="{{ route('product.index') }}">Product List</a></li>
+                            </ul>
+                        </li>
+                    @endif
+                    {{-- links only visible only vendor end --}}
 
                 </ul>
 				<div class="add-menu-sidebar">
@@ -905,6 +913,10 @@
      <!-- Datatable -->
      <script src="{{ asset('dashboard_assets') }}/vendor/datatables/js/jquery.dataTables.min.js"></script>
      <script src="{{ asset('dashboard_assets') }}/js/plugins-init/datatables.init.js"></script>
+     <!-- Select-2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script>
 		function carouselReview(){
