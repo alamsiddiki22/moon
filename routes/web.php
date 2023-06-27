@@ -6,6 +6,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VariationController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +73,7 @@ Route::post('/vendor/login/post', [VendorController::class, 'vendor_login_post']
 
 // ProductController
 Route::resource('product', ProductController::class);
+Route::resource('variation', VariationController::class);
 
 //middleware
 Route::middleware(['adminrolechecker'])->group(function () {

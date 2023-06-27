@@ -18,7 +18,7 @@
     <link href="{{ asset('dashboard_assets') }}/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Select-2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    @livewireStyles
 </head>
 <body>
 
@@ -832,6 +832,11 @@
                                 <li><a href="{{ route('product.index') }}">Product List</a></li>
                             </ul>
                         </li>
+                        <li><a href="{{ route('variation.index') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-settings-2"></i>
+                            <span class="nav-text">Variation</span>
+                            </a>
+                        </li>
                     @endif
                     {{-- links only visible only vendor end --}}
 
@@ -958,6 +963,7 @@
 			}, 1000);
 		});
         </script>
+        @livewireScripts
         @yield('footer_scripts')
 </body>
 </html>
