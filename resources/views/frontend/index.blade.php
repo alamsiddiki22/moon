@@ -300,7 +300,8 @@
                     <div class="product-area clearfix">
 
                         @foreach ($products as $product)
-                            <div class="grid">
+                            <!--
+                                <div class="grid">
                                 <div class="product-pic">
                                     @if ($product->thumbnail)
                                         <img src="{{ asset('uploads/thumbnails') }}/{{ $product->thumbnail }}" class="img-fluid" alt="">
@@ -375,7 +376,9 @@
                                         {{-- <button class="add-to-cart">Add to cart</button> --}}
                                     </div>
                                 </div>
-                            </div>
+                                </div>
+                            -->
+                            @include('frontend.parts.product.grid')
                         @endforeach
                     </div>
                 </div>
