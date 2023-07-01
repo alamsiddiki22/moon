@@ -12,6 +12,9 @@
         <div class="col-xl-6 col-lg-6">
             @livewire('variation.addsize')
         </div>
+        <div class="col-xl-6 col-lg-6">
+            @livewire('variation.addcolor')
+        </div>
     </div>
 </div>
 @endsection
