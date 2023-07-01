@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Color;
+use App\Models\Inventory;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use App\Models\Product;
+use App\Models\Size;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -127,5 +130,38 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+    public function addinventory(Product $product)
+    {
+        $sizes = Size::where('user_id', auth()->id())->get();
+        $colors = Color::where('user_id', auth()->id())->get();
+        $inventories = Inventory::where([
+            'vendor_id' => auth()->id(),
+            'product_id' => $product->id
+        ])->get();
+        return view('dashboard.product.addinventory', compact('product', 'sizes', 'colors', 'inventories'));
+    }
+    public function addinventorypost(Product $product, Request $request)
+    {
+        $inventory = Inventory::where([
+            'product_id' => $product->id,
+            'vendor_id' => $product->vendor_id,
+            'color_id' => $request->color_id,
+            'size_id' => $request->size_id,
+        ])->first();
+        if($inventory){
+            $inventory->increment('quantity', $request->quantity);
+            $inventory->save();
+        }else{
+            Inventory::insert([
+                'product_id' => $product->id,
+                'vendor_id' => $product->vendor_id,
+                'color_id' => $request->color_id,
+                'size_id' => $request->size_id,
+                'quantity' => $request->quantity,
+                'created_at' => Carbon::now()
+            ]);
+        }
+        return back();
     }
 }

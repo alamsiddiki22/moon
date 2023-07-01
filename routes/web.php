@@ -73,6 +73,8 @@ Route::post('/vendor/login/post', [VendorController::class, 'vendor_login_post']
 
 // ProductController
 Route::resource('product', ProductController::class);
+Route::get('product/add/inventory/{product}', [ProductController::class, 'addinventory'])->name('product.add.inventory');
+Route::post('product/add/inventory/{product}', [ProductController::class, 'addinventorypost'])->name('product.add.inventory.post');
 Route::resource('variation', VariationController::class);
 
 //middleware

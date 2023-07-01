@@ -98,6 +98,11 @@
                                                     <button class="btn btn-danger btn-sm mt-1" type="submit">Delete</button>
                                                 </form>
                                             </td>
+                                            <td>
+                                                <a href="{{ route('product.add.inventory', $product->id) }}" class="btn btn-sm btn-info">
+                                                    Add Inventory
+                                                </a>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
