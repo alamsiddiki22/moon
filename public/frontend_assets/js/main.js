@@ -76,7 +76,7 @@
 
     // select option - start
     // --------------------------------------------------
-    $('select').niceSelect();
+    // $('select').niceSelect();
     // select option - end
     // --------------------------------------------------
 
@@ -851,7 +851,7 @@
             dots: false,
             items: 1
         });
-    }  
+    }
 
 
     /*------------------------------------------
@@ -884,22 +884,22 @@
         if($(".header-style-no-collapse .allcategories_dropdown").length) {
             var windowWidth = $(window).width();
             var dropdown = $(".allcategories_collapse");
-    
+
             if(windowWidth <= 991) {
                 dropdown.addClass("collapse");
             } else {
                 dropdown.removeClass("collapse");
-            }    
+            }
         } else {
             return false;
         }
-    }        
+    }
 
 
     /*------------------------------------------
         = woocommerce
     -------------------------------------------*/
-    if($(".checkout-section").length) {        
+    if($(".checkout-section").length) {
         var showLogInBtn = $(".woocommerce-info > a");
         var showCouponBtn = $(".showcoupon");
         var shipDifferentAddressBtn = $("#ship-to-different-address");
@@ -950,7 +950,7 @@
 ==========================================================================*/
 $(window).on("scroll", function() {
 
-   
+
 
 });
 
@@ -959,8 +959,8 @@ $(window).on("scroll", function() {
     WHEN WINDOW RESIZE
 ==========================================================================*/
 $(window).on("resize", function() {
-    
-    
+
+
 
     clearTimeout($.data(this, 'resizeTimer'));
     $.data(this, 'resizeTimer', setTimeout(function() {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactMessage;
 use App\Models\Category;
+use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Team;
 use Carbon\Carbon;
@@ -19,8 +20,9 @@ class FrontendController extends Controller
         ]);
     }
     function product_details($id) {
-        // $product = Product::findOrfail($id);
-        $product = Product::find($id);
+        // $available_sizes = Inventory::select('size_id')->where('product_id', $id)->groupBy('size_id')->get();
+        // $product = Product::find($id);
+        $product = Product::findOrfail($id);
         $related_products = Product::where('category_id', '=', $product->category_id)->where('id', '!=', $id)->get();
         return view('frontend.product_details', compact('product', 'related_products'));
     }

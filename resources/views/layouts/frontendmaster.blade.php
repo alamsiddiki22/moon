@@ -38,6 +38,7 @@
 
     <!-- custom - css include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend_assets') }}/css/style.css">
+    @livewireStyles
 </head>
 
 <body>
@@ -387,7 +388,9 @@
 
     <!-- custom - main-js -->
     <script src="{{ asset('frontend_assets') }}/js/main.js"></script>
+
     {!! NoCaptcha::renderJs() !!}
+    @livewireScripts
 </body>
 </html>
 
