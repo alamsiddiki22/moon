@@ -139,7 +139,7 @@
                                     <li>
                                         <span class="cart_icon">
                                             <i class="icon icon-ShoppingCart"></i>
-                                            <small class="cart_counter">3</small>
+                                            <small class="cart_counter">{{ cart_count() }}</small>
                                         </span>
                                     </li>
                                </ul>
@@ -391,6 +391,8 @@
 
     {!! NoCaptcha::renderJs() !!}
     @livewireScripts
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @yield('footer_scripts')
 </body>
 </html>
 

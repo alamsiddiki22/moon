@@ -17,20 +17,21 @@
                 <div class="col col-md-6">
                     <div class="select_option clearfix">
                         <h4 class="input_title">Color *</h4>
-                        <select class="form-select">
+                        <select class="form-select" wire:model="color_dropdown">
                             @if ($available_colors)
-                            @foreach ($available_colors as $color)
-                                <option value="1">{{ $color->relationshipwithcolor->color_name }}</option>
-                            @endforeach
+                                <option data-display="- Please select -">Choose A Color</option>
+                                @foreach ($available_colors as $color)
+                                    <option value="{{ $color->id }}">{{ $color->relationshipwithcolor->color_name }}</option>
+                                @endforeach
                             @else
-                            <option data-display="- Please select -">Choose A Option</option>
+                                <option data-display="- Please select -">Choose Size First</option>
                             @endif
                         </select>
                     </div>
                 </div>
             </div>
 
-            <div class="quantity_wrap">
+            {{-- <div class="quantity_wrap">
                 <div class="quantity_input">
                     <button type="button" class="input_number_decrement">
                         <i class="fal fa-minus"></i>
@@ -40,79 +41,56 @@
                         <i class="fal fa-plus"></i>
                     </button>
                 </div>
-                <div class="total_price">
-                    Total: $620,99
-                    {{-- @if ($product->discounted_price)
-                        <span>৳ {{ $product->discounted_price }}</span>
+            </div> --}}
+
+                <div class="{{ $visibility }}">
+                    <span class="badge bg-danger p-2">
+                        <i wire:click="decrement" class="fal fa-minus"></i>
+                    </span>
+                    <span class="border" style="font-size: 40px; margin: 10px;">{{ $count }}</span>
+                    <span class="badge bg-success p-2">
+                        <i wire:click="increment" class="fal fa-plus"></i>
+                    </span>
+                        {{-- 2nd option
+                            <button class="btn btn-sm btn-warning" wire:click="decrement"><i class="fal fa-minus"></i></button>
+                            <input type="text" name="" value="{{ $count }}">
+                            <button class="btn btn-sm btn-success" wire:click="increment"><i class="fal fa-plus"></i></button>
+                        --}}
+                    </div>
+                    @if($total_price == 0)
+                        <div class="total_price"> Total: {{ $unit_price }}</div>
                     @else
-                        <span>৳ {{ $product->regular_price }}</span>
-                    @endif --}}
-                </div>
-            </div>
+                        <div class="total_price"> Total: {{ $total_price }}</div>
+                    @endif
 
             <ul class="default_btns_group ul_li">
-                <li><a class="btn btn_primary addtocart_btn" href="#!">Add To Cart</a></li>
-            </ul>
-        </form>
-    </div>
-
-<!--
-    <div class="item_attribute">
-        <form action="#">
-            <div class="row">
-                <div class="col col-md-6">
-                    <div class="select_option clearfix">
-                        <h4 class="input_title">Size *</h4>
-
-                    {{-- <button wire:click='clickbtn()' class="btn btn-success">click me</button> --}}
-
-                        {{-- <select wire:click="changeEvent($event.target.value)"> --}}
-                        <select wire:model='size_dropdown'>
-                            <option value="">Choose A Option</option>
-                            {{-- @foreach ($available_sizes as $available_size)
-                                <option value="{{ $available_size->relationshipwithsize->id }}">{{ $available_size->relationshipwithsize->size }}</option>
-                            @endforeach --}}
-                        </select>
-                    </div>
-                </div>
-                <div class="col col-md-6">
-                    <div class="select_option clearfix">
-                        <h4 class="input_title">Color *</h4>
-                        <select>
-                            <option data-display="- Please select -">Choose A Option</option>
-                            <option value="1">Some option</option>
-                            <option value="2">Another option</option>
-                            <option value="3" disabled>A disabled option</option>
-                            <option value="4">Potato</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="quantity_wrap">
-                <div class="quantity_input">
-                    <button type="button" class="input_number_decrement">
-                        <i class="fal fa-minus"></i>
-                    </button>
-                    <input class="input_number" type="text" value="1">
-                    <button type="button" class="input_number_increment">
-                        <i class="fal fa-plus"></i>
-                    </button>
-                </div>
-                <div class="total_price">
-                    Total:
-                    {{-- @if ($product->discounted_price)
-                        <span>৳ {{ $product->discounted_price }}</span>
+                <li>
+                    @auth
+                        <a class="btn btn_primary addtocart_btn {{ $visibility }}" wire:click="addtocartbtn">Add To Cart</a>
                     @else
-                        <span>৳ {{ $product->regular_price }}</span>
-                    @endif --}}
-                </div>
-            </div>
-
-            <ul class="default_btns_group ul_li">
-                <li><a class="btn btn_primary addtocart_btn" href="#!">Add To Cart</a></li>
+                        <a class="btn btn_primary addtocart_btn" id="not_logged_in">Add To Cart</a>
+                    @endauth
+                </li>
+                {{-- <li>Available Stock: {{ $stock }}</li> --}}
+                <a class="btn btn_secondary">Available Stock: {{ $stock }}</a>
             </ul>
+            Show test here: {{ $test }}
         </form>
     </div>
--->
 </div>
+@section('footer_scripts')
+<script>
+    $(document).ready(function(){
+        $('#not_logged_in').click(function(){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You have to login first',
+                footer: '<a href="{{ route('account') }}">Go to login</a>'
+
+            })
+        });
+    });
+
+</script>
+@endsection

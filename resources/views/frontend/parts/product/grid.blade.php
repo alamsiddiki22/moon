@@ -1,10 +1,10 @@
 <div class="grid">
     <div class="product-pic">
         @if ($product->thumbnail)
-            <img height="150px" width="200px" src="{{ asset('uploads/thumbnails') }}/{{ $product->thumbnail }}" class="img-fluid" alt="">
+            <img height="150px" width="195px" src="{{ asset('uploads/thumbnails') }}/{{ $product->thumbnail }}" class="img-fluid" alt="">
         @else
             {{-- <img height="110px" src="{{ Avatar::create($product->name)->setShape('square') }}" /> --}}
-            <img height="100px" width="150px" src="https://st3.depositphotos.com/23594922/31822/v/1600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg" alt="">
+            <img height="150px" width="195px" src="https://st3.depositphotos.com/23594922/31822/v/1600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg" alt="">
         @endif
         @if ($product->discounted_price)
             <span class="theme-badge-2">{{ round(100 -(($product->discounted_price/$product->regular_price)*100), 2) }}% off</span>

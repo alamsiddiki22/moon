@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactMessage;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Product;
@@ -25,6 +26,10 @@ class FrontendController extends Controller
         $product = Product::findOrfail($id);
         $related_products = Product::where('category_id', '=', $product->category_id)->where('id', '!=', $id)->get();
         return view('frontend.product_details', compact('product', 'related_products'));
+    }
+    function cart() {
+        $carts = Cart::where('user_id', auth()->id())->get();
+        return view('frontend.cart', compact('carts'));
     }
     function about() {
         return view('frontend.about');
