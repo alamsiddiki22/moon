@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
@@ -76,7 +77,9 @@ Route::post('/vendor/login/post', [VendorController::class, 'vendor_login_post']
 Route::resource('product', ProductController::class);
 Route::get('product/add/inventory/{product}', [ProductController::class, 'addinventory'])->name('product.add.inventory');
 Route::post('product/add/inventory/{product}', [ProductController::class, 'addinventorypost'])->name('product.add.inventory.post');
+
 Route::resource('variation', VariationController::class);
+Route::resource('coupon', CouponController::class);
 
 //middleware
 Route::middleware(['adminrolechecker'])->group(function () {

@@ -832,9 +832,16 @@
                                 <li><a href="{{ route('product.index') }}">Product List</a></li>
                             </ul>
                         </li>
-                        <li><a href="{{ route('variation.index') }}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-settings-2"></i>
-                            <span class="nav-text">Variation</span>
+                        <li>
+                            <a href="{{ route('variation.index') }}" class="ai-icon" aria-expanded="false">
+                                <i class="flaticon-381-settings-2"></i>
+                                <span class="nav-text">Variation</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('coupon.index') }}" class="ai-icon" aria-expanded="false">
+                                <i class="flaticon-381-settings-2"></i>
+                                <span class="nav-text">Coupon</span>
                             </a>
                         </li>
                     @endif

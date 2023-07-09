@@ -32,12 +32,23 @@
                         <th class="text-center">Remove</th>
                     </tr>
                 </thead>
+                <style>
+                    .halka_lal{
+                        background-color: rgb(238, 124, 124)
+                    }
+                </style>
                 <tbody>
                     @php
                         $subtotal = 0;
+                        $error = false;
                     @endphp
                     @foreach ($carts as $cart)
-                        <tr>
+                    @php
+                        if(get_inventory($cart->product_id, $cart->color_id, $cart->size_id) < $cart->quantity){
+                            $error = true;
+                        }
+                    @endphp
+                        <tr class="{{ (get_inventory($cart->product_id, $cart->color_id, $cart->size_id) < $cart->quantity) ? 'halka_lal':'' }}">
                             <td>
                                 <div class="cart_product">
 
@@ -46,7 +57,9 @@
                                         <a href="{{ route('product.details', $cart->product_id) }}">
                                             {{ $cart->relationshipwithproduct->name }} (Color: {{ $cart->relationshipwithcolor->color_name }} Size: {{ $cart->relationshipwithsize->size }})
                                             <br><span class="badge bg-info">{{ $cart->relationshipwithuser->name }}</span>
-                                            <br><span class="badge bg-warning">Available Stock: {{ get_inventory($cart->product_id, $cart->color_id, $cart->size_id) }}</span>
+                                            @if (get_inventory($cart->product_id, $cart->color_id, $cart->size_id) < $cart->quantity)
+                                                <br><span class="badge bg-warning">Available Stock: {{ get_inventory($cart->product_id, $cart->color_id, $cart->size_id) }}</span>
+                                            @endif
                                         </a>
                                     </h3>
                                 </div>
@@ -64,13 +77,16 @@
                             <td class="text-center">
                                 <form action="#">
                                     <div class="quantity_input">
-                                        <button type="button" class="input_number_decrement">
+                                        <button wire:click="decrement({{ $cart->id }})" type="button" class="input_number_decrement">
                                             <i class="fal fa-minus"></i>
                                         </button>
-                                        <input class="input_number" type="text" value="{{ $cart->quantity }}" />
-                                        <button type="button" class="input_number_increment">
-                                            <i class="fal fa-plus"></i>
-                                        </button>
+                                        {{-- <input class="input_number" type="text" value="{{ $cart->quantity }}" /> --}}
+                                        <input wire:keyup="input_cart_amount({{ $cart->id }}, $event.target.value)" type="text" value="{{ $cart->quantity }}" />
+                                        @if(get_inventory($cart->product_id, $cart->color_id, $cart->size_id) != $cart->quantity)
+                                            <button wire:click="increment({{ $cart->id }})" type="button" class="input_number_increment">
+                                                <i class="fal fa-plus"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </form>
                             </td>
@@ -82,7 +98,9 @@
                                 @endphp
                                 </span>
                             </td>
-                            <td class="text-center"><button type="button" class="remove_btn"><i class="fal fa-trash-alt"></i></button></td>
+                            <td class="text-center">
+                                <button wire:click="cart_delete({{ $cart->id }})" type="button" class="remove_btn"><i class="fal fa-trash-alt"></i></button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -106,7 +124,13 @@
                 <div class="col col-lg-6">
                     <ul class="btns_group ul_li_right">
                         <li><a class="btn border_black" href="#!">Update Cart</a></li>
-                        <li><a class="btn btn_dark" href="proceed">Prceed To Checkout</a></li>
+                        <li>
+                            @if ($error)
+                                <button class="btn btn_dark" disabled>Error ase</button>
+                            @else
+                                <button class="btn btn_dark">Prceed To Checkout</button>
+                            @endif
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -118,11 +142,15 @@
                     <h3 class="wrap_title">Calculate Shipping <span class="icon"><i class="far fa-arrow-up"></i></span></h3>
                     <form action="#">
                         <div class="select_option clearfix">
-                            <select>
-                                <option value="">Select Your Option</option>
-                                <option value="1">Inside City</option>
-                                <option value="2">Outside City</option>
-                            </select>
+                            <div class="row">
+                                <div class="col-5">
+                                    <select class="form-select">
+                                        <option value="">Select Your Option</option>
+                                        <option value="1">Inside City</option>
+                                        <option value="2">Outside City</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <br>
                         <button type="submit" class="btn btn_primary rounded-pill">Update Total</button>
