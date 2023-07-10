@@ -178,7 +178,7 @@
                             </div>
                         </div>
 
-                        <div class="col col-md-6">
+                        <div class="col col-md-7">
                             <nav class="main_menu navbar navbar-expand-lg">
                                 <div class="main_menu_inner collapse navbar-collapse" id="main_menu_dropdown">
                                     <button type="button" class="offcanvas_close">
@@ -186,6 +186,7 @@
                                     </button>
                                     <ul class="main_menu_list ul_li">
                                         <li><a class="nav-link" href="{{ url('/') }}">Home</a></li>
+                                        <li><a class="nav-link" href="{{ url('/cart') }}">Cart</a></li>
                                         <li><a class="nav-link" href="{{ url('/about') }}">About us</a></li>
                                         <li><a class="nav-link" href="{{ url('/contact') }}">Contact us</a></li>
                                         <li><a class="nav-link" href="{{ url('/home') }}">Dashboard</a></li>
@@ -196,7 +197,7 @@
                             <div class="offcanvas_overlay"></div>
                         </div>
 
-                        <div class="col col-md-3">
+                        <div class="col col-md-2">
                             <ul class="header_icons_group ul_li_right">
                                  @guest
                                     <li>

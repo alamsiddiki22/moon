@@ -10,6 +10,32 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xl-6 col-lg-6">
+            <div class="table-responsive">
+                <table class="table table-primary">
+                    <thead>
+                        <tr>
+                            <th>Coupon Name</th>
+                            <th>Coupon Minimum Value</th>
+                            <th>Discount Type</th>
+                            <th>Coupon Discount Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($coupons as $coupon)
+                            <tr>
+                                <td>{{ $coupon->coupon_name }}</td>
+                                <td>{{ $coupon->coupon_minimum_value }}</td>
+                                <td>{{ $coupon->discount_type }}</td>
+                                <td>{{ $coupon->coupon_discount_amount }}</td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
         </div>
         <div class="col-xl-6 col-lg-6">
             <div>

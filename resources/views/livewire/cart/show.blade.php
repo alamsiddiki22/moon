@@ -110,15 +110,14 @@
         <div class="cart_btns_wrap">
             <div class="row">
                 <div class="col col-lg-6">
-                    <form action="#">
-                        <div class="coupon_form form_item mb-0">
-                            <input type="text" name="coupon" placeholder="Coupon Code...">
-                            <button type="submit" class="btn btn_dark">Apply Coupon</button>
-                            <div class="info_icon">
-                                <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Your Info Here"></i>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="coupon_form form_item mb-0">
+                        <input wire:model="coupon_name" type="text" name="coupon" placeholder="@if (session('coupon_info')) {{ session('coupon_info')->coupon_name }} @else Enter coupon here @endif ">
+                        <button wire:click="apply_coupon({{ $carts->first()->vendor_id }}, {{ $subtotal }})" type="button" class="btn btn_dark">Apply Coupon</button>
+                        {{-- <div class="info_icon">
+                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Your Info Here"></i>
+                        </div> --}}
+                    </div>
+                    <small class="text-danger">{{ $coupon_error }}</small>
                 </div>
 
                 <div class="col col-lg-6">
@@ -168,7 +167,41 @@
                         </li>
                         <li>
                             <span>Discount (-)</span>
-                            <span class="text-danger">$5</span>
+                            <span class="text-danger">
+                                @if (session('coupon_info'))
+                                    @if (session('coupon_info')->discount_type == 'flat')
+                                        {{ session('coupon_info')->coupon_discount_amount }} ({{ session('coupon_info')->coupon_name }})
+                                    @else
+                                        {{ session('coupon_info')->coupon_discount_amount }}% ({{ session('coupon_info')->coupon_name }})
+                                    @endif
+                                @else
+                                    0
+                                @endif
+                                {{-- @if ($after_discount_subtotal==0)
+                                    0
+                                @else
+                                    {{ $subtotal - $after_discount_subtotal }}
+                                @endif --}}
+                            </span>
+                        </li>
+                        <li>
+                            <span>After Discount</span>
+                            <span class="text-danger">
+                                @if (session('coupon_info'))
+                                    @if (session('coupon_info')->discount_type == 'flat')
+                                        {{ $subtotal - session('coupon_info')->coupon_discount_amount }}
+                                    @else
+                                        {{ $subtotal - ((session('coupon_info')->coupon_discount_amount*$subtotal)/100) }}
+                                    @endif
+                                @else
+                                    {{ $subtotal }}
+                                @endif
+                                {{-- @if ($after_discount_subtotal==0)
+                                    {{ $subtotal }}
+                                @else
+                                    {{ $after_discount_subtotal }}
+                                @endif --}}
+                            </span>
                         </li>
                         <li>
                             <span>Delivery Charge (+)</span>

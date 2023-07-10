@@ -14,7 +14,9 @@ class CouponController extends Controller
      */
     public function index()
     {
-        return view('dashboard.coupon.index');
+        return view('dashboard.coupon.index', [
+            'coupons' => Coupon::where('vendor_id', auth()->id())->get()
+        ]);
     }
 
     /**
