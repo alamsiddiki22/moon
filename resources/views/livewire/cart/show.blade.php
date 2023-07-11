@@ -127,7 +127,9 @@
                             @if ($error)
                                 <button class="btn btn_dark" disabled>Error ase</button>
                             @else
-                                <button class="btn btn_dark">Prceed To Checkout</button>
+                                @if ($shipping_id != 0)
+                                    <a href="{{ route('checkout') }}" class="btn btn_dark">Proceed To Checkout</a>
+                                @endif
                             @endif
                         </li>
                     </ul>
@@ -143,10 +145,11 @@
                         <div class="select_option clearfix">
                             <div class="row">
                                 <div class="col-5">
-                                    <select class="form-select">
-                                        <option value="">Select Your Option</option>
-                                        <option value="1">Inside City</option>
-                                        <option value="2">Outside City</option>
+                                    <select class="form-select" wire:model="shipping_dropdown">
+                                        <option value="0">Select Your Option</option>
+                                        @foreach ($shippings as $shipping)
+                                            <option value="{{ $shipping->id }}">{{ $shipping->shipping_type }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -189,27 +192,36 @@
                             <span class="text-danger">
                                 @if (session('coupon_info'))
                                     @if (session('coupon_info')->discount_type == 'flat')
-                                        {{ $subtotal - session('coupon_info')->coupon_discount_amount }}
+                                        {{ round($subtotal - session('coupon_info')->coupon_discount_amount) }}
+                                        @php
+                                            session(['after_discount' => round($subtotal - session('coupon_info')->coupon_discount_amount)]);
+                                        @endphp
                                     @else
-                                        {{ $subtotal - ((session('coupon_info')->coupon_discount_amount*$subtotal)/100) }}
+                                        {{ round($subtotal - ((session('coupon_info')->coupon_discount_amount*$subtotal)/100)) }}
+                                        @php
+                                            session(['after_discount' => round($subtotal - ((session('coupon_info')->coupon_discount_amount*$subtotal)/100))]);
+                                        @endphp
                                     @endif
                                 @else
-                                    {{ $subtotal }}
+                                    {{ round($subtotal) }}
+                                    @php
+                                        session(['after_discount' => round($subtotal)]);
+                                    @endphp
                                 @endif
-                                {{-- @if ($after_discount_subtotal==0)
-                                    {{ $subtotal }}
-                                @else
-                                    {{ $after_discount_subtotal }}
-                                @endif --}}
                             </span>
                         </li>
                         <li>
                             <span>Delivery Charge (+)</span>
-                            <span>$5</span>
+                            <span>{{ session('shipping_charge') ?? 0 }}</span>
                         </li>
                         <li>
                             <span>Order Total</span>
-                            <span class="total_price">$57.50</span>
+                            <span class="total_price">
+                                {{ session('after_discount') + session('shipping_charge') }}
+                                @php
+                                    session(['order_total' => session('after_discount') + session('shipping_charge')]);
+                                @endphp
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -217,5 +229,13 @@
         </div>
     </div>
 </section>
+
+<!-- section list - start-->
+<!--coupon_info
+after_discount
+shipping_charge
+order_total-->
+<!-- section list - end-->
+
 <!-- cart_section - end-->
 </div>

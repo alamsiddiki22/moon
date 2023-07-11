@@ -67,6 +67,7 @@
                                         <th>Cagegory Name</th>
                                         <th>Create at</th>
                                         <th>Action</th>
+                                        <th>Inventory Add</th>
                                     </tr>
                                 </thead>
                                 <tbody>

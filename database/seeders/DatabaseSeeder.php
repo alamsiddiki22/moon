@@ -18,11 +18,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        DB::table('users')->insert([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('12345678'),
+        // DB::table('users')->insert([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@gmail.com',
+        //     'email_verified_at' => Carbon::now(),
+        //     'password' => Hash::make('12345678'),
+        // ]);
+        $this->call([
+            UserSeeder::class,
+            ShippingSeeder::class,
         ]);
+
+
     }
 }

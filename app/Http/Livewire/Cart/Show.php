@@ -4,10 +4,13 @@ namespace App\Http\Livewire\Cart;
 
 use App\Models\Cart;
 use App\Models\Coupon;
+use App\Models\Shipping;
 use Livewire\Component;
 
 class Show extends Component
 {
+    public $shipping_dropdown;
+    public $shipping_id = 0;
     public $coupon_name;
     public $coupon_error;
     public $after_discount_subtotal = 0;
@@ -53,6 +56,15 @@ class Show extends Component
             }
         }
     }
+    public function UpdatedShippingDropdown($id)
+    {
+        $this->shipping_id = $id;
+        if($id == 0){
+            session(['shipping_charge' => 0]);
+        }else{
+            session(['shipping_charge' => Shipping::findOrfail($id)->charge]);
+        }
+    }
     public function cart_delete($id)
     {
         Cart::find($id)->delete();
@@ -74,6 +86,8 @@ class Show extends Component
     public function render()
     {
         $carts = Cart::where('user_id', auth()->id())->get();
-        return view('livewire.cart.show', compact('carts'));
+        $shippings = Shipping::all();
+        // $shippings = Shipping::where('user_id', auth()->id())->get();
+        return view('livewire.cart.show', compact('carts', 'shippings'));
     }
 }

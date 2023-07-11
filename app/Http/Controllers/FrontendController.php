@@ -31,6 +31,15 @@ class FrontendController extends Controller
         $carts = Cart::where('user_id', auth()->id())->get();
         return view('frontend.cart', compact('carts'));
     }
+    function checkout() {
+        $after_explode = explode('/', url()->previous());
+        if(end($after_explode) == 'cart'){
+            // return "This is proceed to checkout page";
+            return view('frontend.checkout');
+        }else{
+            abort(404);
+        }
+    }
     function about() {
         return view('frontend.about');
     }
