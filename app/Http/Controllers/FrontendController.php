@@ -11,6 +11,8 @@ use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Khsing\World\Models\Country;
+use Khsing\World\World;
 
 class FrontendController extends Controller
 {
@@ -35,7 +37,11 @@ class FrontendController extends Controller
         $after_explode = explode('/', url()->previous());
         if(end($after_explode) == 'cart'){
             // return "This is proceed to checkout page";
-            return view('frontend.checkout');
+            $country = Country::getByCode('bd');
+
+            $regsions = $country->children();
+            $countries = World::Countries();
+            return view('frontend.checkout', compact('countries', 'regsions'));
         }else{
             abort(404);
         }
