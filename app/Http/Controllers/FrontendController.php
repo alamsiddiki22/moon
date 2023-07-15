@@ -36,15 +36,27 @@ class FrontendController extends Controller
     function checkout() {
         $after_explode = explode('/', url()->previous());
         if(end($after_explode) == 'cart'){
-            // return "This is proceed to checkout page";
-            $country = Country::getByCode('bd');
-
-            $regsions = $country->children();
             $countries = World::Countries();
-            return view('frontend.checkout', compact('countries', 'regsions'));
+            return view('frontend.checkout', compact('countries'));
         }else{
             abort(404);
         }
+    }
+    function getcitylist(Request $request) {
+
+        $country = Country::getByCode($request->country_code);
+        $cities_from_db = $country->children();
+        $sorted = collect($cities_from_db)->sortBy('name');
+        $cities = $sorted->values()->all();
+
+        $generated_city_dropdown = "";
+        foreach ($cities as $city) {
+            $generated_city_dropdown .= "<option value='$city->id'>$city->name</option>";
+        }
+        return $generated_city_dropdown;
+    }
+    function checkout_post(Request $request) {
+        return $request;
     }
     function about() {
         return view('frontend.about');

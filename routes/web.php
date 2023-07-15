@@ -23,6 +23,8 @@ Route::get('/', [FrontendController::class, "index"])->name('index');
 Route::get('/product/details/{id}', [FrontendController::class, "product_details"])->name('product.details');
 Route::get('/cart', [FrontendController::class, "cart"])->name('cart');
 Route::get('/checkout', [FrontendController::class, "checkout"])->name('checkout');
+Route::post('/checkout', [FrontendController::class, "checkout_post"])->name('checkout.post');
+Route::post('/getcitylist', [FrontendController::class, "getcitylist"])->name('getcitylist');
 Route::get('/about', [FrontendController::class, "about"])->name('about');
 Route::get('/contact', [FrontendController::class, "contact"])->name('contact');
 Route::post('/contact/post', [FrontendController::class, "contact_post"])->name('contact.post');
