@@ -87,7 +87,7 @@
                             </div>
                             <div class="md-4">
                                 <label for="" class="form-label">Description</label>
-                                <textarea class="form-control" name="description" rows="5"></textarea>
+                                <textarea id="summernote" class="form-control" name="description" rows="5"></textarea>
                             </div>
                             <div class="md-4">
                                 <label for="" class="form-label">Short Description</label>
