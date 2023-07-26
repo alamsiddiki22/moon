@@ -6,6 +6,8 @@ use App\Mail\ContactMessage;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Inventory;
+use App\Models\Invoice;
+use App\Models\Invoice_detail;
 use App\Models\Product;
 use App\Models\Team;
 use Carbon\Carbon;
@@ -56,7 +58,58 @@ class FrontendController extends Controller
         return $generated_city_dropdown;
     }
     function checkout_post(Request $request) {
-        return $request;
+
+        $invoice_id = Invoice::insertGetId([
+
+            'user_id' => auth()->id(),
+            'vendor_id' => Cart::where('user_id', auth()->id())->first()->vendor_id,
+            'customer_name' => $request->customer_name,
+            'customer_email' => $request->customer_email,
+            'customer_phone_number' => $request->customer_phone_number,
+            'customer_country_id' => $request->customer_country_id,
+            'customer_city_id' => $request->customer_city_id,
+            'customer_address' => $request->customer_address,
+            'customer_remarks' => $request->customer_remarks,
+            'payment_method' => $request->payment_method,
+            'coupon_info' => session('coupon_info')->coupon_name,
+            'after_discount' => session('after_discount'),
+            'shipping_charge' => session('shipping_charge'),
+            'order_total' => session('order_total'),
+            'created_at' => Carbon::now()
+        ]);
+        foreach (Cart::where('user_id', auth()->id())->get() as $cart) {
+
+            if(Product::find($cart->product_id)->discounted_price){
+                $unit_price = Product::find($cart->product_id)->discounted_price;
+            }else{
+                $unit_price = Product::find($cart->product_id)->regular_price;
+            }
+            echo "<br><br><br><br><br>";
+
+            Invoice_detail::insert([
+                'invoice_id' => $invoice_id,
+                'product_id' => $cart->product_id,
+                'color_id' => $cart->color_id,
+                'size_id' => $cart->size_id,
+                'quantity' => $cart->quantity,
+                'unit_price' => $unit_price,
+                'created_at' => Carbon::now()
+            ]);
+            Inventory::where([
+                'product_id' => $cart->product_id,
+                'color_id' => $cart->color_id,
+                'size_id' => $cart->size_id
+            ])->decrement('quantity', $cart->quantity);
+
+            $cart->delete();
+        }
+
+        if($request->payment_method == 'cod'){
+            return redirect('cart');
+        }else{
+            return redirect('/pay');
+        }
+
     }
     function about() {
         return view('frontend.about');
