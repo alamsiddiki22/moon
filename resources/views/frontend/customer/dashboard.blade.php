@@ -27,7 +27,7 @@
                 </div>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                    <button type="submit" class="btn btn-danger btn-sm m-5">Logout</button>
                 </form>
             </div>
             <div class="col-lg-9">
@@ -37,6 +37,39 @@
                             <h5>Welcome to Account</h5>
                         @endif
                             <h5>Welcome to Account</h5>
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <h3>Total Orders</h3>
+                                            <h5>{{ $invoices->count() }}</h5>
+                                        </div>
+                                        <div class="col-4">
+                                            <h3>Online Payment</h3>
+                                            <h5>{{ $invoices->where('payment_method', 'online')->count() }}</h5>
+                                        </div>
+                                        <div class="col-4">
+                                            <h3>Cash on Delevary</h3>
+                                            <h5>{{ $invoices->where('payment_method', 'cod')->count() }}</h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <h3>Total Order Values</h3>
+                                            <h5>{{ $invoices->sum('order_total') }}</h5>
+                                        </div>
+                                        <div class="col-4">
+                                            <h3>Total Paid</h3>
+                                            <h5>{{ $invoices->where('payment_status', 'paid')->sum('order_total') }}</h5>
+                                        </div>
+                                        <div class="col-4">
+                                            <h3>Total Unpaid</h3>
+                                            <h5>{{ $invoices->where('payment_status', 'unpaid')->sum('order_total') }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                         <h5 class="text-center pb-3">Account Details</h5>

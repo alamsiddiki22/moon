@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use App\Library\SslCommerz\SslCommerzNotification;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class SslCommerzPaymentController extends Controller
 {
@@ -26,7 +27,7 @@ class SslCommerzPaymentController extends Controller
         # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
 
         $post_data = array();
-        $post_data['total_amount'] = '10'; # You cant not pay less than 10
+        $post_data['total_amount'] = session('order_total'); # You cant not pay less than 10
         $post_data['currency'] = "BDT";
         $post_data['tran_id'] = uniqid(); // tran_id must be unique
 
@@ -58,7 +59,7 @@ class SslCommerzPaymentController extends Controller
         $post_data['product_profile'] = "physical-goods";
 
         # OPTIONAL PARAMETERS
-        $post_data['value_a'] = "ref001";
+        $post_data['value_a'] = session('invoice_id');
         $post_data['value_b'] = "ref002";
         $post_data['value_c'] = "ref003";
         $post_data['value_d'] = "ref004";
@@ -161,6 +162,11 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
+        $invoice_id_from_checkout = $request->input('value_a');
+
+        DB::table('invoices')->where('id', $invoice_id_from_checkout)->update([
+            'payment_status' => 'paid'
+        ]);
         echo "Transaction is Successful";
 
         $tran_id = $request->input('tran_id');
@@ -188,12 +194,18 @@ class SslCommerzPaymentController extends Controller
                     ->update(['status' => 'Processing']);
 
                 echo "<br >Transaction is successfully Completed";
+                DB::table('invoices')->where('id', $invoice_id_from_checkout)->update([
+                    'payment_status' => 'paid'
+                ]);
             }
         } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
             echo "Transaction is successfully Completed";
+            DB::table('invoices')->where('id', $invoice_id_from_checkout)->update([
+                'payment_status' => 'paid'
+            ]);
         } else {
             #That means something wrong happened. You can redirect customer to your product page.
             echo "Invalid Transaction";
@@ -272,12 +284,16 @@ class SslCommerzPaymentController extends Controller
                         ->update(['status' => 'Processing']);
 
                     echo "Transaction is successfully Completed";
+                    DB::table('invoices')->where('id',session('invoice_id'))->update([
+                        'payment_status' => 'paid'
+                    ]);
                 }
             } else if ($order_details->status == 'Processing' || $order_details->status == 'Complete') {
 
                 #That means Order status already updated. No need to udate database.
 
                 echo "Transaction is already successfully Completed";
+
             } else {
                 #That means something wrong happened. You can redirect customer to your product page.
 

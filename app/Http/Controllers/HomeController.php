@@ -7,6 +7,7 @@ use App\Models\User;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use App\Mail\NewAdminMail;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -31,7 +32,8 @@ class HomeController extends Controller
     public function index()
     {
         if(auth()->user()->role == 'customer'){
-            return view('frontend.customer.dashboard');
+            $invoices = Invoice::where('user_id', auth()->id())->get();
+            return view('frontend.customer.dashboard', compact('invoices'));
         }else{
             $team = Team::all();
             return view('home', [

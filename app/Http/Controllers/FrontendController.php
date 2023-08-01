@@ -77,6 +77,7 @@ class FrontendController extends Controller
             'order_total' => session('order_total'),
             'created_at' => Carbon::now()
         ]);
+        // session(['invoice_id', $invoice_id]);
         foreach (Cart::where('user_id', auth()->id())->get() as $cart) {
 
             if(Product::find($cart->product_id)->discounted_price){
@@ -107,7 +108,8 @@ class FrontendController extends Controller
         if($request->payment_method == 'cod'){
             return redirect('cart');
         }else{
-            return redirect('/pay');
+            // session(['invoice_id', $invoice_id]);
+            return redirect('pay')->with('invoice_id', $invoice_id);
         }
 
     }
