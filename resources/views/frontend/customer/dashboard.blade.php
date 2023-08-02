@@ -70,6 +70,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <h1>Chart</h1>
+                            <hr>
+                            <div class="card mt-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        {{-- <div class="col-6" style="height: 500px; width: 500px">
+                                            <canvas id="myChart" width="200" height="200"></canvas>
+                                        </div> --}}
+                                        <div class="col-6">
+                                            <canvas id="payment_method_chart"></canvas>
+                                        </div>
+                                        <div class="col-6">
+                                            <canvas id="payment_chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                         <h5 class="text-center pb-3">Account Details</h5>
@@ -97,23 +115,40 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Order No</th>
-                                <th>Sub Total</th>
+                                <th>Payment Method</th>
+                                <th>Payment Status</th>
+                                <th>Order Status</th>
                                 <th>Discount</th>
                                 <th>Delivery Charge</th>
-                                <th>Total</th>
+                                <th>Order Total</th>
                                 <th>Action</th>
                             </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>#120</td>
-                                <td>52500</td>
-                                <td>200</td>
-                                <td>100</td>
-                                <td>52400</td>
-                                <td>
-                                    <a href="#" class="btn btn-primary">Download Invoice</a>
-                                </td>
-                            </tr>
+                            @foreach ($invoices as $invoice)
+                                <tr>
+                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>{{ $invoice->id }}</td>
+                                    <td>{{ $invoice->payment_method }}</td>
+                                    <td>{{ $invoice->payment_status }}</td>
+                                    <td>{{ $invoice->order_status }}</td>
+                                    <td>{{ $invoice->coupon_info }}</td>
+                                    {{-- <td>
+                                        @if ($invoice->coupon_info)
+                                            @if ($invoice->coupon_info->discount_type == 'flat')
+                                                {{ $invoice->coupon_info->coupon_discount_amount }} ({{ $invoice->coupon_info->coupon_name }})
+                                            @else
+                                                {{ $invoice->coupon_info->coupon_discount_amount }}% ({{ $invoice->coupon_info->coupon_name }})
+                                            @endif
+                                        @else
+                                            0
+                                        @endif
+                                    </td> --}}
+                                    <td>{{ $invoice->shipping_charge }}</td>
+                                    <td>{{ $invoice->order_total }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary">Download Invoice</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </table>
                     </div>
                 </div>
@@ -124,4 +159,66 @@
 </section>
 <!-- account_section - end
 ================================================== -->
+@endsection
+@section('footer_scripts')
+<script>
+    // const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('payment_method_chart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Online Payment', 'Cash on Delevary', 'Yellow',],
+            datasets: [{
+                label: '# of payments',
+                data: [{{ $invoices->where('payment_method', 'online')->count() }}, {{ $invoices->where('payment_method', 'cod')->count() }}, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132)',
+                    'rgba(54, 162, 235)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const ctx1 = document.getElementById('payment_chart').getContext('2d');
+    const myChart1 = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: ['Paid', 'Unpaid'],
+            datasets: [{
+                label: '# of payments',
+                data: [{{ $invoices->where('payment_status', 'paid')->sum('order_total') }}, {{ $invoices->where('payment_status', 'unpaid')->sum('order_total') }}],
+                backgroundColor: [
+                    'rgba(54, 162, 235)',
+                    'rgba(255, 99, 132)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
 @endsection
