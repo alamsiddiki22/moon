@@ -49,6 +49,7 @@ Route::post('/check/code', [ProfileController::class, 'check_code']);
 Route::get('/account', [CustomerController::class, 'account'])->name('account');
 Route::post('/customer/login', [CustomerController::class, 'customer_login'])->name('customer.login');
 Route::post('/customer/register', [CustomerController::class, 'customer_register'])->name('customer.register');
+Route::get('/download/invoice/{id}', [CustomerController::class, 'download_invoice'])->name('download.invoice');
 
 
 

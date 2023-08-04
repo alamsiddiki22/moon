@@ -145,7 +145,7 @@
                                     <td>{{ $invoice->shipping_charge }}</td>
                                     <td>{{ $invoice->order_total }}</td>
                                     <td>
-                                        <a href="#" class="btn btn-primary">Download Invoice</a>
+                                        <a href="{{ route('download.invoice', $invoice->id) }}" class="btn btn-primary">Download Invoice</a>
                                     </td>
                                 </tr>
                             @endforeach

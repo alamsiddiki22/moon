@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CustomerController extends Controller
 {
@@ -21,6 +23,7 @@ class CustomerController extends Controller
             echo "Your email or password is wrong!";
         }
     }
+
     public function customer_register(Request $request) {
         $request->validate([
             'name' => 'required',
@@ -44,6 +47,11 @@ class CustomerController extends Controller
         // send email verification mail
         User::find($id)->sendEmailVerificationNotification();
         return back()->with('customer_success', 'Your account created successfully! A verification email send to your mail');
+    }
+    public function download_invoice($id) {
+        $invoice = Invoice::find($id);
+        $pdf = Pdf::loadView('pdf.invoice', compact('invoice'));
+        return $pdf->download('invoice('.$id.').pdf');
     }
 
 }
