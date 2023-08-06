@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice_detail extends Model
 {
     use HasFactory;
+    function relationshipwithproduct(){
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

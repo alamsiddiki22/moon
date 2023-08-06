@@ -9,4 +9,8 @@ class Invoice extends Model
 {
     use HasFactory;
     protected $fillable = ['payment_status'];
+
+    function invoice_detail(){
+        return $this->hasMany(Invoice_detail::class, 'invoice_id', 'id');
+    }
 }

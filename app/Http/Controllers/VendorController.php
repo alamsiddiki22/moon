@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -61,6 +62,12 @@ class VendorController extends Controller
         //     'role' => 'vendor',
         // ]);
 
+    }
+    public function vendor_order(){
+        $invoices = Invoice::with(['invoice_detail' => function($q){
+            $q->with('relationshipwithproduct');
+        }])->where('vendor_id', auth()->id())->get();
+        return view('dashboard.vendor.order', compact('invoices'));
     }
 
 }

@@ -77,6 +77,7 @@ Route::get('/vendor/registration', [VendorController::class, 'vendor_registratio
 Route::get('/vendor/login', [VendorController::class, 'vendor_login'])->name('vendor.login');
 Route::post('/vendor/registration', [VendorController::class, 'vendor_registration_post'])->name('vendor.registration.post');
 Route::post('/vendor/login/post', [VendorController::class, 'vendor_login_post'])->name('vendor.login.post');
+Route::get('/vendor/order/{id}', [VendorController::class, 'vendor_order'])->name('vendor.order');
 
 // ProductController
 Route::resource('product', ProductController::class);
