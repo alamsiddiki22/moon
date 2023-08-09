@@ -69,5 +69,18 @@ class VendorController extends Controller
         }])->where('vendor_id', auth()->id())->get();
         return view('dashboard.vendor.order', compact('invoices'));
     }
+    public function vendor_order_status_change (Request $request, $id){
+        Invoice::find($id)->update([
+            'order_status' => $request->order_status
+        ]);
+        if($request->order_status == 'delivered'){
+            if(Invoice::find($id)->payment_method == 'cod'){
+                Invoice::find($id)->update([
+                    'payment_status' => 'paid'
+                ]);
+            }
+        }
+        return back();
+    }
 
 }

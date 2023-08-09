@@ -145,7 +145,12 @@
                                     <td>{{ $invoice->shipping_charge }}</td>
                                     <td>{{ $invoice->order_total }}</td>
                                     <td>
-                                        <a href="{{ route('download.invoice', $invoice->id) }}" class="btn btn-primary">Download Invoice</a>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="{{ route('download.invoice', $invoice->id) }}" class="btn btn-primary">Download Invoice</a>
+                                            @if ($invoice->order_status == 'delivered')
+                                                <a href="{{ route('give.review', $invoice->id) }}" class="btn btn-secondary">Review</a>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

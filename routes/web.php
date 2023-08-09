@@ -50,6 +50,8 @@ Route::get('/account', [CustomerController::class, 'account'])->name('account');
 Route::post('/customer/login', [CustomerController::class, 'customer_login'])->name('customer.login');
 Route::post('/customer/register', [CustomerController::class, 'customer_register'])->name('customer.register');
 Route::get('/download/invoice/{id}', [CustomerController::class, 'download_invoice'])->name('download.invoice');
+Route::get('/give/review/{id}', [CustomerController::class, 'give_review'])->name('give.review');
+Route::post('/insert/review/{invoice_details_id}', [CustomerController::class, 'insert_review'])->name('insert.review');
 
 
 
@@ -78,6 +80,7 @@ Route::get('/vendor/login', [VendorController::class, 'vendor_login'])->name('ve
 Route::post('/vendor/registration', [VendorController::class, 'vendor_registration_post'])->name('vendor.registration.post');
 Route::post('/vendor/login/post', [VendorController::class, 'vendor_login_post'])->name('vendor.login.post');
 Route::get('/vendor/order/{id}', [VendorController::class, 'vendor_order'])->name('vendor.order');
+Route::post('/vendor/order/status/change/{id}', [VendorController::class, 'vendor_order_status_change'])->name('vendor.order.status.change');
 
 // ProductController
 Route::resource('product', ProductController::class);

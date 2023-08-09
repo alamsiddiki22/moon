@@ -44,6 +44,7 @@
                                         <th>Order No</th>
                                         <th>Customer Name</th>
                                         <th>Payment Method</th>
+                                        <th>Payment Status</th>
                                         <th>Order Status</th>
                                         <th>Order Total</th>
                                         <th>Create at</th>
@@ -56,10 +57,23 @@
                                             <td>{{ $invoice->id }}</td>
                                             <td>{{ $invoice->customer_name }}</td>
                                             <td>{{ $invoice->payment_method }}</td>
+                                            <td>{{ $invoice->payment_status }}</td>
                                             <td>{{ $invoice->order_status }}</td>
                                             <td>{{ $invoice->order_total }}</td>
                                             <td>{{ $invoice->created_at->diffForHumans() }}</td>
-                                            <td><button type="submit">button</button></td>
+                                            <td>
+                                                {{-- @if ($invoice->order_status != 'delivered') --}}
+                                                    <form action="{{ route('vendor.order.status.change', $invoice->id) }}" method="post">
+                                                        @csrf
+                                                        <select onchange="this.form.submit()" name="order_status">
+                                                            <option value="">-Change Order Status-</option>
+                                                            <option {{ ($invoice->order_status == 'packaging') ? 'selected':'' }} value="packaging">Packaging</option>
+                                                            <option {{ ($invoice->order_status == 'shipping') ? 'selected':'' }} value="shipping">Shipping</option>
+                                                            <option {{ ($invoice->order_status == 'delivered') ? 'selected':'' }} value="delivered">Delivered</option>
+                                                        </select>
+                                                    </form>
+                                                {{-- @endif --}}
+                                            </td>
                                         </tr>
                                         <tr style="background-color: rgb(250, 243, 243)">
                                             <td colspan="50">

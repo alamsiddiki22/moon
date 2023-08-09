@@ -30,13 +30,32 @@
         </h4>
         {{-- <span class="badge bg-info">{{ $product->relationshipwithcategory->category_name }}</span> --}}
         <span class="badge" style="background: {{ $product->relationshipwithcategory->category_color }}">{{ $product->relationshipwithcategory->category_name }}</span>
-        <p><a href="#">{{ Str::limit($product->short_description, 20) }} </a></p>
+        <p>
+            <a href="#">{{ Str::limit($product->short_description, 20) }} </a>
+        </p>
         <div class="rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
+            {{-- <i class="fas fa-star-half-alt"></i> --}}
+
+            @if(average_rating($product->id) == 0)
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            @endif
+            @for ($i=1; $i<=average_rating($product->id); $i++)
+                <i class="fas fa-star"></i>
+            @endfor
+
+            @php
+                $empty_stars = 5-average_rating($product->id);
+            @endphp
+            @if ($empty_stars != 5)
+                @for ($i=1; $i<=$empty_stars; $i++)
+                    <i class="far fa-star"></i>
+                @endfor
+            @endif
+
         </div>
         <span class="price">
             @if ($product->discounted_price)

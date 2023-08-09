@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend_assets') }}/css/fontawesome.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend_assets') }}/css/stroke-gap-icons.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend_assets') }}/css/icofont.css">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" integrity="sha512-siarrzI1u3pCqFG2LEzi87McrBmq6Tp7juVsdmGY1Dr8Saw+ZBAzDzrGwX3vgxX1NkioYNCFOVC0GpDPss10zQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
 
     <!-- animation - css include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend_assets') }}/css/animate.css">
@@ -398,7 +399,7 @@
     <!-- chart js  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.2/chart.min.js" integrity="sha512-csUso5vWY3PpIJkxLWFbPI7KkjXFhKXpUaAUp1ZLyNhxVWdQacEPH9e7Iw6Rco4es1uQNnlxdCCFkSnJ/f1ZzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
-    
+
     @yield('footer_scripts')
 
     <!--Start of Tawk.to Script-->
