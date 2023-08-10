@@ -81,6 +81,9 @@ Route::post('/vendor/registration', [VendorController::class, 'vendor_registrati
 Route::post('/vendor/login/post', [VendorController::class, 'vendor_login_post'])->name('vendor.login.post');
 Route::get('/vendor/order/{id}', [VendorController::class, 'vendor_order'])->name('vendor.order');
 Route::post('/vendor/order/status/change/{id}', [VendorController::class, 'vendor_order_status_change'])->name('vendor.order.status.change');
+Route::get('/vendor/wallet', [VendorController::class, 'vendor_wallet'])->name('vendor.wallet');
+Route::post('/vendor/wallet/withdrawl', [VendorController::class, 'vendor_wallet_withdrawl'])->name('vendor.wallet.withdrawl');
+Route::post('/vendor/wallet/withdrawl/request', [VendorController::class, 'vendor_wallet_withdrawl_request'])->name('vendor.wallet.withdrawl.request');
 
 // ProductController
 Route::resource('product', ProductController::class);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\User;
+use App\Models\Withdrawl;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,6 +82,36 @@ class VendorController extends Controller
             }
         }
         return back();
+    }
+    public function vendor_wallet(){
+        $invoices = Invoice::with(['invoice_detail' => function($q){
+            $q->with('relationshipwithproduct');
+        }])->where([
+            'vendor_id' => auth()->id(),
+            'payment_status' => 'paid',
+            'order_status' => 'delivered',
+        ])->get();
+        return view('dashboard.vendor.wallet', compact('invoices'));
+    }
+    public function vendor_wallet_withdrawl(Request $request){
+        $invoices = Invoice::whereIn('id', $request->invoices)->get();
+        return view('dashboard.vendor.wallet_withdraw', compact('invoices'));
+    }
+    public function vendor_wallet_withdrawl_request(Request $request){
+        $withdrawl_ids = explode(',', rtrim(ltrim($request->withdrawl_ids, '['), ']'));
+
+        foreach ($withdrawl_ids as $withdrawl_id) {
+            // echo "invoice id ".$withdrawl_id.'<br>';
+            Withdrawl::insert([
+                'invoice_id' => $withdrawl_id,
+                'vendor_id' => auth()->id(),
+                'created_at' => Carbon::now(),
+            ]);
+            Invoice::find($withdrawl_id)->update([
+                'withdrawl_status' => 'request sent'
+            ]);
+        }
+        return redirect('vendor/wallet');
     }
 
 }

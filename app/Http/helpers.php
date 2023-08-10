@@ -1,6 +1,7 @@
 <?php
     use App\Models\Cart;
 use App\Models\Inventory;
+use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Review;
 
@@ -44,4 +45,15 @@ use App\Models\Review;
     //         return 0;
     //     }
     // }
+
+    function total_orders(){
+        return Invoice::where('vendor_id', auth()->id())->count();
+    }
+    function total_paid(){
+        return Invoice::where([
+            'vendor_id' => auth()->id(),
+            'payment_status' => 'paid',
+            'order_status' => 'delivered',
+        ])->count();
+    }
 ?>

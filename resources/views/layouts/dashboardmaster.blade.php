@@ -850,7 +850,7 @@
                                 <span class="nav-text">
                                     Order
                                     <div class="badge bg-success">
-                                        5
+                                        {{ total_orders() }}
                                     </div>
                                 </span>
                             </a>
@@ -859,6 +859,17 @@
                             <a href="{{ route('coupon.index') }}" class="ai-icon" aria-expanded="false">
                                 <i class="flaticon-381-settings-2"></i>
                                 <span class="nav-text">Coupon</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('vendor.wallet') }}" class="ai-icon" aria-expanded="false">
+                                <i class="flaticon-381-settings-2"></i>
+                                <span class="nav-text">
+                                    Wallet
+                                    <div class="badge bg-primary text-white my-2">
+                                        {{ total_paid() }}
+                                    </div>
+                                </span>
                             </a>
                         </li>
                     @endif
